@@ -32,9 +32,9 @@ void deleteParentandRelationChild(listParent &LP, listChild &LC, listRelations &
 void deleteRelation(listRelations &LR, adrR relation);
 void showAllChildFromAllParent(listParent LP, listChild LC, listRelations LR);
 bool findSameRelation(listRelations LR, adrC child, adrP parent);
-void findChildFromParent(listChild C, adrP P);
-void deleteChildFromParent(listChild &LC, listRelations &LR, adrP P);
-void countParentFromChild(listRelations LR, adrC C);
+void printChildFromParent(listRelations LR, adrP P);
+void deleteChildFromParent(listChild &LC, listRelations &LR, adrP P, adrC C);
+void countParentFromChild(listRelations LR, listChild LC);
 void printMenu();
 
 

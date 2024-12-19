@@ -344,17 +344,69 @@ bool findSameRelation(listRelations LR, adrC child, adrP parent){
     }
     return false;
 };
-void findChildFromParent(listChild C, adrP P){
-
+void printChildFromParent(listRelations LR, adrP P){
+    printf("\n\nSinetron '%s':\n", infoP(P).c_str());
+    adrR FR = firstR(LR);
+    int i = 1;
+    while(FR != null){
+        if(infoRP(FR) == P){
+            printf("%d. %s\n", i, infoC(infoRC(FR)).c_str());
+            i++;
+        }
+        FR = nextR(FR);
+    }
 }
-void deleteChildFromParent(listChild &LC, listRelations &LR, adrP P);
-void countParentFromChild(listRelations LR, adrC C);
+void deleteChildFromParent(listChild &LC, listRelations &LR, adrP P, adrC C){
+    //sudah memilih child mana yang akan dihapus, akan dhapus relasinya lalu akan dihapus childnya jika tidak memiliki relasi lain
+    adrR FR = firstR(LR);
+    while (FR != null){
+        if(infoRP(FR) == P && infoRC(FR) == C){
+            break;
+        }
+        FR = nextR(FR);
+    }
+    deleteRelation(LR, FR);
+    //check apakah child digunakan di relasi lain
+    bool ketemu = false;
+    FR = firstR(LR);
+    while (FR != null){
+        if(infoRC(FR) == C){
+            ketemu = true;
+            break;
+        }
+        FR = nextR(FR);
+    }
+    if (!ketemu){
+        deleteChild(LC, C);
+    }
+};
+void countParentFromChild(listRelations LR, listChild LC){
+    int n = 1;
+    printf("-----------------------------\n");
+    printf("          A R T I S          \n");
+    printf("-----------------------------\n");
+    adrC C = firstC(LC);
+    while(C != null){
+        int i = 0;
+        adrR R = firstR(LR);
+        while(R != null){
+            if(infoRC(R) == C){
+                i++;
+            }
+            R = nextR(R);
+        }
+        printf("%d. %s memainkan %d sinetron\n", n, infoC(C).c_str(), i);
+        n++;
+        C = nextC(C);
+    }
+    printf("-----------------------------\n");
+};
 void printMenu(){
     printf("-----------------------------\n");
     printf("           M E N U           \n");
     printf("-----------------------------\n");
 
-    printf("1. Insert data sinetron\n2. insert data artis\n3. buat relasi antar sinetron dan artis\n4. tampilkan semua sinetron\n5. tampilkan semua artis\n6. ubah data sinetron atau data artis\n7. hapus sinetron\n");
+    printf("1. Insert data sinetron\n2. insert data artis\n3. buat relasi antar sinetron dan artis\n4. tampilkan semua sinetron\n5. tampilkan semua artis\n6. ubah data sinetron atau data artis\n7. hapus sinetron dan artisnya\n");
     printf("8. hapus artis dari sinetron tertentu\n9. tampilkan semua sinetron beserta artis\n10. tampilkan banyak film yang dimainkan artis\n");
     printf("-----------------------------\n");
 }

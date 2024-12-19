@@ -98,6 +98,9 @@ int main()
 
                     if(findSameRelation(LR, FC, FP)){
                         printf("\ninput relasi tidak berhasil, sinetron '%s' sudah memiliki artis '%s'\n", judulsinetron.c_str(), namaartis.c_str());
+                        printf("tekan enter untuk lanjut: ");
+                        enterPressed();
+                        system("CLS");
                         break;
                     }
                     adrR R = createElemenRelation(FC, FP);
@@ -159,6 +162,7 @@ int main()
                 break;
 
             case 7://hapus parent dari list dan menghapus relasinya sert child yang tidak memiliki parent lain
+                showAllChildFromAllParent(LP,LC,LR);
                 deleteParentandRelationChild(LP,LC,LR);
                 printf("\n");
                 printf("tekan enter untuk lanjut: ");
@@ -166,11 +170,44 @@ int main()
                 system("CLS");
                 break;
 
-            case 8:
-
+            case 8: //hapus artis dari sinetron tertentu
+                printf("\n\n");
+                showAllParent(LP);
+                printf("masukkan sinetron yang ingin dihapus artisnya: ");
+                getline(cin, judulsinetron);
+                {
+                    adrP P = findParent(LP, judulsinetron);
+                    if(P != NULL){
+                        printChildFromParent(LR, P);
+                        printf("Masukkan nama artis yang ingin dihapus: ");
+                        getline(cin, namaartis);
+                        adrC C = findChild(LC, namaartis);
+                        if (C != NULL){
+                            deleteChildFromParent(LC, LR, P, C);
+                            printf("Berhasil '%s' telah dihapus dari '%s'\n", namaartis.c_str(), judulsinetron.c_str());
+                        } else {
+                            printf("Artis tidak ketemu\n");
+                        }
+                    } else {
+                        printf("Sinetron tidak ketemu\n");
+                    }
+                }
+                printf("\n");
+                printf("tekan enter untuk lanjut: ");
+                enterPressed();
+                system("CLS");
+                break;
 
             case 9: // menampilkan semua sinetron beserta artis yang memainkan sinetron tersebut
                 showAllChildFromAllParent(LP, LC, LR);
+                printf("\n");
+                printf("tekan enter untuk lanjut: ");
+                enterPressed();
+                system("CLS");
+                break;
+
+            case 10: //menampilkan semua artis dan  banyak sinetron yang dimainkannya
+                countParentFromChild(LR,LC);
                 printf("\n");
                 printf("tekan enter untuk lanjut: ");
                 enterPressed();
