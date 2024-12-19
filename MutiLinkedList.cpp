@@ -407,6 +407,6 @@ void printMenu(){
     printf("-----------------------------\n");
 
     printf("1. Insert data sinetron\n2. insert data artis\n3. buat relasi antar sinetron dan artis\n4. tampilkan semua sinetron\n5. tampilkan semua artis\n6. ubah data sinetron atau data artis\n7. hapus sinetron dan artisnya\n");
-    printf("8. hapus artis dari sinetron tertentu\n9. tampilkan semua sinetron beserta artis\n10. tampilkan banyak film yang dimainkan artis\n");
+    printf("8. hapus artis dari sinetron tertentu\n9. tampilkan semua sinetron beserta artis\n10. tampilkan banyak film yang dimainkan artis\n0. keluar\n");
     printf("-----------------------------\n");
 }
