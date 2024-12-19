@@ -41,9 +41,6 @@ void insertLastParent(listParent &L, adrP P){
     }
 
 };
-void insertParentGeneral(listParent &L, adrP P){
-
-};
 adrP findParent(listParent L, string cariNamaSinetron){
    /*is: diberikan string yang merupakan nama sinetron
    fs: akan dicari pada list nama sinetron tersebut lalu direturn dapat berupa null apabila tidak ketemu */
@@ -92,6 +89,7 @@ void showAllParent(listParent L){
         P = nextP(P);
         i++;
     }
+    printf("-----------------------------\n");
 
 };
 void deleteAfterParent(listParent &L, adrP P){
@@ -154,18 +152,25 @@ void insertLastChild(listChild &L, adrC C){
         firstC(L) = C;
     }
 };
-void deleteAfterChild(listChild &L, adrC C){
+void deleteChild(listChild &L, adrC C){
     if (C != null){
         if (C == firstC(L)){
             firstC(L) = nextC(C);
             nextC(C) = null;
             delete C;
-        }
-        if (nextC(C) != null){
-            adrC X = nextC(C);
-            nextC(C) = nextC(X);
-            nextC(X) = null;
-            delete X;
+        } else {
+            adrC BC = firstC(L);
+            while(BC != null){
+                if(nextC(BC) == C){
+                    break;
+                }
+                BC = nextC(BC);
+            }
+            if(BC != null){
+                nextC(BC) = nextC(C);
+                nextC(C) = null;
+                delete C;
+            }
         }
     }
 
@@ -175,19 +180,6 @@ adrC findChild(listChild &L, string nama){
     adrC P = firstC(L);
     while(P != null){
         if(infoC(P) == nama){
-            break;
-        }
-        P = nextC(P);
-    }
-    return P;
-};
-adrC findChildBefore(listChild &L, adrC child){
-    if (child == firstC(L)){
-        return child;
-    }
-    adrC P = firstC(L);
-    while(P != null){
-        if (next(P) == child){
             break;
         }
         P = nextC(P);
@@ -227,6 +219,7 @@ void printAllChild(listChild L){
         P = nextC(P);
         i++;
     }
+    printf("-----------------------------\n");
 };
 
 void createListRelation(listRelations &L){
@@ -253,7 +246,7 @@ void insertLastRelation(listRelations &L, adrR relation){
 void deleteParentandRelationChild(listParent &LP, listChild &LC, listRelations &LR){
     string judul;
     printf("Masukkan judul sinetron yang ingin dihapus: ");
-    cin >> judul;
+    getline(cin, judul);
     adrP P = findParent(LP, judul);
     if (P == null){
         printf("sinetron tidak ditemukan\n");
@@ -270,15 +263,14 @@ void deleteParentandRelationChild(listParent &LP, listChild &LC, listRelations &
                     }
                     FR2 = nextR(FR2);
                 }
-                FR2 = FR;
-                FR = nextR(FR);
-                if (ketemu >= 2){
-                    deleteRelation(LR, FR2);
+                adrR temp = nextR(FR);
+                if (ketemu > 1){
+                    deleteRelation(LR, FR);
                 } else {
-                    adrC C = findChildBefore(LC, infoRC(FR2));
-                    deleteAfterChild(LC, C);
-                    deleteRelation(LR, FR2);
+                    deleteChild(LC, infoRC(FR));
+                    deleteRelation(LR, FR);
                 }
+                FR = temp;
             } else {
                 FR = nextR(FR);
             }
@@ -290,18 +282,26 @@ void deleteParentandRelationChild(listParent &LP, listChild &LC, listRelations &
     }
 };
 void deleteRelation(listRelations &LR, adrR relation){
+    //menghapus relasi, input relasi tidak harus before
     if (relation == firstR(LR)){
         firstR(LR) = nextR(relation);
         nextR(relation) = null;
         delete(relation);
     } else{
         adrR FR = firstR(LR);
-        while(nextR(FR) != relation){
+        while(FR != null){
+            if(next(FR) == relation){
+                break;
+            }
             FR = nextR(FR);
         }
-        nextR(FR) = nextR(relation);
-        nextR(relation) = null;
-        delete(relation);
+        if (FR != null){
+            nextR(FR) = nextR(relation);
+            nextR(relation) = null;
+            delete(relation);
+        } else {
+            printf("\ngagal\n");
+        }
     }
 };
 void showAllChildFromAllParent(listParent LP, listChild LC, listRelations LR){
@@ -312,13 +312,19 @@ void showAllChildFromAllParent(listParent LP, listChild LC, listRelations LR){
     printf("----------------------------------------------------------\n");
 
     while(P != null) {
-        printf(" %d. %s :", i, infoP(P).c_str());
+        printf(" %d. %s : ", i, infoP(P).c_str());
         adrR R = firstR(LR);
+        int n = 0;
         while(R != null){
             if (infoRP(R) == P){
                 cout << infoC(infoRC(R)) << ", ";
+                n++;
             }
             R = nextR(R);
+        }
+        i++;
+        if (n >= 1){
+            cout << "\b\b" << ".";
         }
         cout << endl;
         P = nextP(P);
@@ -326,7 +332,21 @@ void showAllChildFromAllParent(listParent LP, listChild LC, listRelations LR){
 
     printf("----------------------------------------------------------\n");
 };
-void findChildFromParent(listChild C, adrP P);
+bool findSameRelation(listRelations LR, adrC child, adrP parent){
+    //mengeluarkan boolean untuk mencari apakah child dan parent sudah memiliki hubungan;
+    //false jika belum ada true jika sudah ada
+    adrR FR = firstR(LR);
+    while (FR != null){
+        if(infoRC(FR) == child && infoRP(FR) == parent){
+            return true;
+        }
+        FR = nextR(FR);
+    }
+    return false;
+};
+void findChildFromParent(listChild C, adrP P){
+
+}
 void deleteChildFromParent(listChild &LC, listRelations &LR, adrP P);
 void countParentFromChild(listRelations LR, adrC C);
 void printMenu(){
@@ -334,7 +354,7 @@ void printMenu(){
     printf("           M E N U           \n");
     printf("-----------------------------\n");
 
-    printf("1. Insert data sinetron\n2. insert data artis\n3. buat relasi antar sinetorn dan artis\n4. tampilkan semua sinetron\n5. tampilkan semua artis\n6. ubah data sinetron atau data artis\n7. hapus sinetron\n");
+    printf("1. Insert data sinetron\n2. insert data artis\n3. buat relasi antar sinetron dan artis\n4. tampilkan semua sinetron\n5. tampilkan semua artis\n6. ubah data sinetron atau data artis\n7. hapus sinetron\n");
     printf("8. hapus artis dari sinetron tertentu\n9. tampilkan semua sinetron beserta artis\n10. tampilkan banyak film yang dimainkan artis\n");
     printf("-----------------------------\n");
 }

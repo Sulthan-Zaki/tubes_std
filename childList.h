@@ -28,7 +28,6 @@ adrC createElemenchild(infotypeC newArtis);
 void insertLastChild(listChild &L, adrC C);
 void deleteAfterChild(listChild &L, adrC C);
 adrC findChild(listChild &L, string nama);
-adrC findChildBefore(listChild &L, string nama);
 void changeDataChild(listChild &L, string namaLama, string namaBaru);
 void printAllChild(listChild L);
 

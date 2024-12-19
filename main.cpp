@@ -6,6 +6,14 @@
 
 using namespace std;
 
+void enterPressed(){
+    char ch;
+    cin.get(ch);
+    while(ch != '\n'){
+        cin.get(ch);
+    }
+}
+
 int main()
 {
     listParent LP;
@@ -19,91 +27,101 @@ int main()
     int x = 99;
     printf("Pilihan: ");
     cin >> x;
+    cin.ignore();
     string namaartis;
     string judulsinetron;
     while (x != 0){
         switch(x){
-            case 1:
+            case 1: // input judul sinteron baru
                 printf("Masukkan judul sinetron: ");
-                cin >> judulsinetron;
+                getline(cin, judulsinetron);
                 {
                     adrP P = createElemenParent(judulsinetron);
-                    insertLastParent(LP, P);
+                    adrP findSame = findParent(LP, judulsinetron);
+                    if (findSame == NULL){
+                        insertLastParent(LP, P);
+                        printf("\ninput sinetron berhasil\n");
+                    } else {
+                        printf("\ninput tidak berhasil judul :'%s' sudah ada\n", judulsinetron.c_str());
+                    }
                 }
-                printf("input apa saja untuk lanjut: ");
-                cin.ignore();
-                cin.get();
+                printf("tekan enter untuk lanjut: ");
+                enterPressed();
                 system("CLS");
                 break;
 
-            case 2:
+            case 2: //input nama artis baru
                 printf("Masukkan nama artis: ");
-                cin >> namaartis;
+                getline(cin, namaartis);
                 {
                     adrC C = createElemenchild(namaartis);
-                    insertLastChild(LC, C);
+                    adrC findSame = findChild(LC, namaartis);
+                    if(findSame == NULL){
+                        insertLastChild(LC, C);
+                        printf("\ninput artis berhasil\n");
+                    } else {
+                        printf("\ninput arti tidak berhasil artis bernama: '%s' sudah ada\n", namaartis.c_str());
+                    }
                 }
-                printf("input apa saja untuk lanjut: ");
-                cin.ignore();
-                cin.get();
+                printf("tekan enter untuk lanjut: ");
+                enterPressed();
                 system("CLS");
                 break;
 
-            case 3:
+            case 3: //input data relasi
                 showAllParent(LP);
                 printf("\n\n");
                 printAllChild(LC);
                 printf("\n\n");
                 printf("Masukkan judul sinetron yang ada di list: ");
-                cin >> judulsinetron;
+                getline(cin,judulsinetron);
                 printf("Masukkan nama artis yang ada di list: ");
-                cin >> namaartis;
+                getline(cin, namaartis);
                 {
                     adrP FP = findParent(LP, judulsinetron);
 
                     if (FP == NULL){
                         printf("sinetron tidak ditemukan\n");
-                        printf("input apa saja untuk lanjut: ");
-                        cin.ignore();
-                        cin.get();
+                        printf("tekan enter untuk lanjut: ");
+                        enterPressed();
                         system("CLS");
                         break;
                     }
                     adrC FC = findChild(LC, namaartis);
                     if (FC == NULL){
                         printf("artis tidak ditemukan");
-                        printf("input apa saja untuk lanjut: ");
-                        cin.ignore();
-                        cin.get();
+                        printf("tekan enter untuk lanjut: ");
+                        enterPressed();
                         system("CLS");
                         break;
                     }
 
+                    if(findSameRelation(LR, FC, FP)){
+                        printf("\ninput relasi tidak berhasil, sinetron '%s' sudah memiliki artis '%s'\n", judulsinetron.c_str(), namaartis.c_str());
+                        break;
+                    }
                     adrR R = createElemenRelation(FC, FP);
                     insertLastRelation(LR, R);
                 }
                 printf("Membuat relasi...\n");
-                printf("input apa saja untuk lanjut: ");
-                cin.ignore();
-                cin.get();
+                printf("tekan enter untuk lanjut: ");
+                enterPressed();
                 system("CLS");
                 break;
 
             case 4: //tampilkan seluruh sinetron
                 showAllParent(LP);
                 printf("\n");
-                printf("input apa saja untuk lanjut: ");
-                cin.ignore();
-                cin.get();
+                printf("tekan enter untuk lanjut: ");
+                enterPressed();
                 system("CLS");
                 break;
 
             case 5: //tampilkan seluruh artis
                 printAllChild(LC);
                 printf("\n");
-                printf("input apa saja untuk lanjut: ");
-                cin.ignore();
-                cin.get();
+                printf("tekan enter untuk lanjut: ");
+                enterPressed();
                 system("CLS");
                 break;
 
@@ -111,66 +129,67 @@ int main()
                 {
                     string pilihan;
                     printf("Pilih yang ingin diubah(artis / sinetron)? ");
-                    cin >> pilihan;
+                    getline(cin, pilihan);
                     if(pilihan == "sinetron"){
                         showAllParent(LP);
                         printf("\n masukkan judul sinetron yang akan diubah: ");
                         string judullama;
-                        cin >> judullama;
+                        getline(cin,judullama);
                         printf("\n masukkan judul baru: ");
                         string judulbaru;
-                        cin >> judulbaru;
+                        getline(cin,judulbaru);
                         changeDataParent(LP, judullama, judulbaru);
                     } else if(pilihan == "artis"){
                         printAllChild(LC);
                         printf("\n masukkan nama artis yang akan diubah: ");
                         string namalama;
-                        cin >> namalama;
+                        getline(cin, namalama);
                         printf("\n masukkan nama baru: ");
                         string namabaru;
-                        cin >> namabaru;
+                        getline(cin, namabaru);
                         changeDataChild(LC, namalama, namabaru);
                     } else {
                         printf("pilihan salah, kembali ke menu awal");
                     }
                 }
                 printf("\n");
-                printf("input apa saja untuk lanjut: ");
-                cin.ignore();
-                cin.get();
+                printf("tekan enter untuk lanjut: ");
+                enterPressed();
                 system("CLS");
                 break;
 
-            case 7:
+            case 7://hapus parent dari list dan menghapus relasinya sert child yang tidak memiliki parent lain
                 deleteParentandRelationChild(LP,LC,LR);
                 printf("\n");
-                printf("input apa saja untuk lanjut: ");
-                cin.ignore();
-                cin.get();
+                printf("tekan enter untuk lanjut: ");
+                enterPressed();
                 system("CLS");
                 break;
 
-            case 9:
+            case 8:
+
+
+            case 9: // menampilkan semua sinetron beserta artis yang memainkan sinetron tersebut
                 showAllChildFromAllParent(LP, LC, LR);
                 printf("\n");
-                printf("input apa saja untuk lanjut: ");
-                cin.ignore();
-                cin.get();
+                printf("tekan enter untuk lanjut: ");
+                enterPressed();
                 system("CLS");
                 break;
 
             default:
-                // Optional default case to handle unexpected input
                 printf("Pilihan tidak ada\n");
-                printf("input apa saja untuk lanjut: ");
-                cin.ignore();
-                cin.get();
+                printf("tekan enter untuk lanjut: ");
+                enterPressed();
                 system("CLS");
                 break;
         }
         printMenu();
         printf("Pilihan: ");
         cin >> x;
+        cin.ignore();
     }
     return 0;
 }
+
+

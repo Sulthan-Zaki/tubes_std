@@ -1,22 +1,22 @@
 # depslib dependency file v1.0
-1734538580 source:d:\cpp\tubes\tugas-besar\main.cpp
+1734585711 source:d:\cpp\tubes\tugas-besar\main.cpp
 	<iostream>
 	<cstdio>
 	"relation.h"
 	<cstdlib>
 
-1734538658 d:\cpp\tubes\tugas-besar\relation.h
+1734575867 d:\cpp\tubes\tugas-besar\relation.h
 	<iostream>
 	"parentList.h"
 	"childList.h"
 
-1734528509 d:\cpp\tubes\tugas-besar\parentlist.h
+1734579839 d:\cpp\tubes\tugas-besar\parentlist.h
 	<iostream>
 
-1734530264 d:\cpp\tubes\tugas-besar\childlist.h
+1734579839 d:\cpp\tubes\tugas-besar\childlist.h
 	<iostream>
 
-1734541406 source:d:\cpp\tubes\tugas-besar\mutilinkedlist.cpp
+1734585212 source:d:\cpp\tubes\tugas-besar\mutilinkedlist.cpp
 	"relation.h"
 	<iostream>
 	<cstdio>

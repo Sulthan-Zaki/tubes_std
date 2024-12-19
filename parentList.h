@@ -27,7 +27,6 @@ void createListParent(listParent &L);
 adrP createElemenParent(infotypeP newSinetron);
 void insertFirstParent(listParent &L, adrP P);
 void insertLastParent(listParent &L, adrP P);
-void insertParentGeneral(listParent &L, adrP P);
 adrP findParent(listParent L, string cariNamaSinetron);
 adrP findParentBefore(listParent L, string cariNamaSinetron);
 void showAllParent(listParent L);
