@@ -26,6 +26,7 @@ int main()
     printMenu();
     int x = 99;
     printf("Pilihan: ");
+    cout << "Haloooo" << endl;
     cin >> x;
     cin.ignore();
     string namaartis;
